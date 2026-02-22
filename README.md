@@ -75,8 +75,6 @@ configs/
 
 docs/
     msd_compare.png
-    Brownian_Motion_Theory_Document.docx
-    Project_Explanation_3D_Brownian_Simulator.docx
 
 src/particle_sim/
     simulate.py
