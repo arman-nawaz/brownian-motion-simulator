@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "particle_sim"
+version = "0.1.0"
+description = "3D Brownian motion (drift–diffusion) simulator with MSD analysis and CLI"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Arman Nawaz"}]
+dependencies = [
+  "numpy>=1.22",
+  "matplotlib>=3.6",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
