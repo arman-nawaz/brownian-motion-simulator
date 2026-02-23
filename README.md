@@ -144,6 +144,12 @@ Install the package:
 pip install -e .
 ```
 
+For development and testing:
+
+```bash
+pip install -e ".[dev]"
+```
+
 ---
 
 ## Running the Simulation
