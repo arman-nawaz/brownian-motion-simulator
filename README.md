@@ -211,11 +211,13 @@ Run tests:
 pytest -q
 ```
 
-Tests verify:
+The test suite verifies:
 
-- Reproducibility with fixed random seeds  
-- Correct trajectory dimensions  
-- Valid MSD behavior  
+- Input validation and edge cases  
+- Deterministic limits (D = 0, drift-only motion)  
+- Correct trajectory shapes  
+- MSD computation correctness  
+- Diffusion estimator accuracy on ideal and simulated data 
 
 ---
 
