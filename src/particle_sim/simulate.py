@@ -33,7 +33,7 @@ def simulate_brownian_3d(
     noise = rng.normal(0.0, sigma, size=(n_steps, 3))
     steps = noise + drift * dt
 
-    traj = np.zeros((n_steps + 1, 3))
+    traj = np.zeros((n_steps + 1, 3), dtype=float)
     traj[1:] = np.cumsum(steps, axis=0)
     return traj
 
@@ -47,7 +47,7 @@ def simulate_many(
     seed: int,
 ) -> np.ndarray:
     """
-    Simulate multiple independent trajectories.
+    Simulate multiple independent trajectories (vectorized).
 
     Returns
     -------
@@ -56,17 +56,24 @@ def simulate_many(
     """
     if n_particles <= 0:
         raise ValueError("n_particles must be > 0")
+    if n_steps <= 0:
+        raise ValueError("n_steps must be > 0")
+    if dt <= 0:
+        raise ValueError("dt must be > 0")
+    if diffusion < 0:
+        raise ValueError("diffusion must be >= 0")
+
+    drift_arr = np.asarray(drift, dtype=float)
+    if drift_arr.shape != (3,):
+        raise ValueError("drift must be length 3")
 
     rng = np.random.default_rng(seed)
-    trajs = np.zeros((n_particles, n_steps + 1, 3))
+    sigma = np.sqrt(2.0 * diffusion * dt)
 
-    for i in range(n_particles):
-        trajs[i] = simulate_brownian_3d(
-            n_steps=n_steps,
-            dt=dt,
-            diffusion=diffusion,
-            drift=drift,
-            seed=int(rng.integers(0, 2**31 - 1)),
-        )
+    # noise shape: (P, n_steps, 3)
+    noise = rng.normal(0.0, sigma, size=(n_particles, n_steps, 3))
+    steps = noise + drift_arr * dt
 
+    trajs = np.zeros((n_particles, n_steps + 1, 3), dtype=float)
+    trajs[:, 1:, :] = np.cumsum(steps, axis=1)
     return trajs
